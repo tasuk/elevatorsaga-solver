@@ -52,7 +52,14 @@
                 if (floorNum === 0) {
                     goingUp(elevator);
                 }
+
                 delete elevator.destinations[floorNum];
+                if (elevator.goingUpIndicator()) {
+                    delete go.up[floorNum];
+                }
+                if (elevator.goingDownIndicator()) {
+                    delete go.down[floorNum];
+                }
                 //console.log("stopped at floor " + floorNum + ", with remaining destinations: ", elevator.destinations);
             });
         });
