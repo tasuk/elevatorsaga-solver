@@ -5,11 +5,17 @@
         var goingUp = function(elevator) {
             elevator.goingUpIndicator(true);
             elevator.goingDownIndicator(false);
-        }
+        };
         var goingDown = function(elevator) {
             elevator.goingUpIndicator(false);
             elevator.goingDownIndicator(true);
-        }
+        };
+
+        var descend = function(elevator) {
+            goingDown(elevator);
+            elevator.goToFloor(elevator.currentFloor());
+            elevator.goToFloor(0);
+        };
 
         _.each(elevators, function(elevator) {
             elevator.destinations = {};
@@ -18,10 +24,15 @@
             elevator.on("idle", function() {
                 minUpDest = _.min(elevator.destinations);
                 if (minUpDest === Infinity) {
-                    // no destinations left
-                    goingDown(elevator);
-                    elevator.goToFloor(elevator.currentFloor());
-                    elevator.goToFloor(0);
+                    // no up destinations left
+                    maxDown = _.max(go.down);
+                    if (Math.random() > 0.5 && maxDown > elevator.currentFloor()) {
+                        delete go.down[maxDown];
+                        elevator.goToFloor(maxDown);
+                        descend(elevator);
+                    } else {
+                        descend(elevator);
+                    }
                 } else {
                     // bring people up
                     goingUp(elevator);
