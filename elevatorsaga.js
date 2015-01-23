@@ -48,9 +48,12 @@
 
             elevator.on("passing_floor", function(floorNum, direction) {
                 //console.log("passing floor " + floorNum + ", going " + direction + ", loaded " + elevator.loadFactor());
-                if (direction === "down" && elevator.loadFactor() < 0.7 && floorNum in go.down) {
-                    elevator.goToFloor(floorNum, true);
-                    delete go.down[floorNum];
+                if (direction === "down") {
+                    if ((floorNum in elevator.destinations)
+                            || (elevator.loadFactor() < 0.7 && floorNum in go.down)) {
+                        elevator.goToFloor(floorNum, true);
+                        delete go.down[floorNum];
+                    }
                 }
                 if (direction === "up" && elevator.loadFactor() < 0.7 && floorNum in go.up) {
                     elevator.goToFloor(floorNum, true);
