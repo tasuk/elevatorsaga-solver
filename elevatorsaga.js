@@ -16,18 +16,17 @@
 
             goingUp(elevator); // start by going up
             elevator.on("idle", function() {
-                minDest = _.min(elevator.destinations);
-                maxDest = _.max(elevator.destinations);
-                if (minDest === Infinity) {
+                minUpDest = _.min(elevator.destinations);
+                if (minUpDest === Infinity) {
                     // no destinations left
-
                     goingDown(elevator);
                     elevator.goToFloor(elevator.currentFloor());
                     elevator.goToFloor(0);
                 } else {
                     // bring people up
                     goingUp(elevator);
-                    elevator.goToFloor(minDest);
+                    delete go.up[minUpDest];
+                    elevator.goToFloor(minUpDest);
                 }
             });
 
